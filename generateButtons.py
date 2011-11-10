@@ -226,9 +226,6 @@ try:
                 for file in files:
                     file_basename = os.path.splitext(file)[0]
                     infullfilename=os.path.normpath(root + '/' + file)
-                    
-                    print "MJMJMJ    " + infullfilename 
-                    
                     fileName, fileExtension = os.path.splitext(infullfilename)
                     
                     if fileExtension == '.svg':
