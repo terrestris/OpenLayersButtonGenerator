@@ -214,8 +214,8 @@ try:
         outputdirpng = './output-png'
         bgColorInString = '#ff0000'
         fgColorInString = '#ffffff'
-        bgColorOutString = cleanup_passed_color_value(sys.argv[1]);
-        fgColorOutString = cleanup_passed_color_value(sys.argv[2]);
+        bgColorOutString = cleanup_passed_color_value(sys.argv[1])
+        fgColorOutString = cleanup_passed_color_value(sys.argv[2])
         if bgColorOutString != '' and fgColorOutString != '':
             print ""
             print "Running script " + sys.argv[0]
@@ -225,29 +225,37 @@ try:
             for root, dirs, files in os.walk(inputdir):
                 for file in files:
                     file_basename = os.path.splitext(file)[0]
-                    infullfilename=os.path.normpath(root + '/' + file);
-                    outfullfilenamesvg=os.path.normpath(outputdirsvg + '/' + file);
-                    outfullfilenamepng = os.path.normpath(outputdirpng + '/' + file_basename + '.png');
-                    print ""
-                    print 'Processing "' + infullfilename + '"'
-                    print '       ==> "' + outfullfilenamesvg + '"'
-                    print '       ==> "' + outfullfilenamepng + '"'
-                    if (os.path.isfile(infullfilename)):
-                        f=open(infullfilename, 'r')
-                        lines=f.readlines()
-                        f.close()
-                        f=open(outfullfilenamesvg, 'w')
-                        for line in lines:
-                            newline=line.replace(bgColorInString, bgColorOutString + 'temporary');
-                            newline=newline.replace(fgColorInString, fgColorOutString);
-                            newline=newline.replace(bgColorOutString + 'temporary', bgColorOutString);
-                            f.write(newline)
-                        f.close()
-                        
-                        os.system("inkscape -f " + outfullfilenamesvg + " -e " + outfullfilenamepng)
-                        print '... done.'
+                    infullfilename=os.path.normpath(root + '/' + file)
+                    
+                    print "MJMJMJ    " + infullfilename 
+                    
+                    fileName, fileExtension = os.path.splitext(infullfilename)
+                    
+                    if fileExtension == '.svg':
+                        outfullfilenamesvg=os.path.normpath(outputdirsvg + '/' + file)
+                        outfullfilenamepng = os.path.normpath(outputdirpng + '/' + file_basename + '.png')
+                        print ""
+                        print 'Processing "' + infullfilename + '"'
+                        print '       ==> "' + outfullfilenamesvg + '"'
+                        print '       ==> "' + outfullfilenamepng + '"'
+                        if (os.path.isfile(infullfilename)):
+                            f=open(infullfilename, 'r')
+                            lines=f.readlines()
+                            f.close()
+                            f=open(outfullfilenamesvg, 'w')
+                            for line in lines:
+                                newline=line.replace(bgColorInString, bgColorOutString + 'temporary')
+                                newline=newline.replace(fgColorInString, fgColorOutString)
+                                newline=newline.replace(bgColorOutString + 'temporary', bgColorOutString)
+                                f.write(newline)
+                            f.close()
+                            
+                            os.system("inkscape -f " + outfullfilenamesvg + " -e " + outfullfilenamepng)
+                            print '... done.'
+                        else:
+                            print '... "' + infullfilename + '" is NOT a file.'
                     else:
-                        print '... "' + infullfilename + '" is NOT a file.'
+                        print '... "' + infullfilename + '" ignored.'
             print ""
         else:
             print_illegal_color_format_screen( sys.argv[1], sys.argv[2] , bgColorOutString, fgColorOutString )
